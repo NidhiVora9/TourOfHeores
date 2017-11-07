@@ -2,39 +2,46 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { MessageService } from './message.service';
 import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
 import { filter } from 'rxjs/operator/filter';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Hero } from './hero';
 import { HEROES } from './mock-heroes';
 import 'rxjs/add/operator/toPromise';
+import { HERO_DATA } from './hero-data';
+import { of } from 'rxjs/observable/of';
+import * as _ from 'lodash';
 
 
 @Injectable()
 
 export class HeroService {
-    private heroesUrl = '/api/heroes';  // URL to web api
+    private heroesUrl = 'api/heroes';  // URL to web api
+    private heroData: Hero[] = [];
 
-    constructor(private http: HttpClient, private  messageService: MessageService) { }
+    constructor(private http: HttpClient, private  messageService: MessageService) {
+        this.heroData = [...HERO_DATA];
+    }
 
     // getHeroes(): Promise<Hero[]> {
     //     return Promise.resolve(HEROES);
     // }
 
     getHeroes(): Observable<Hero[]> {
-        return this.http.get<Hero[]>(this.heroesUrl)
-            .pipe(
-                tap(heroes => this.log(`fetched heroes`)),
-                catchError(this.handleError('getHeroes', []))
-            );
+        return of(HERO_DATA);
+        // return this.http.get<Hero[]>(this.heroesUrl)
+        //     .pipe(
+        //         tap(heroes => this.log(`fetched heroes`)),
+        //         catchError(this.handleError('getHeroes', []))
+        //     );
     }
 
     getHero(id: number): Observable<Hero> {
-        const url = `${this.heroesUrl}/?id=${id}`;
-        return this.http.get<Hero>(url).pipe(
-            tap(_ => this.log(`fetched hero id=${id}`)),
-            catchError(this.handleError<Hero>(`getHero id=${id}`))
-        );
+        return of(_.find(HERO_DATA, 'id', id));
+        // const url = `${this.heroesUrl}/?id=${id}`;
+        // return this.http.get<Hero>(url).pipe(
+        //     tap(_ => this.log(`fetched hero id=${id}`)),
+        //     catchError(this.handleError<Hero>(`getHero id=${id}`))
+        // );
     }
 
     // getHero(id: number): Promise<Hero> {
