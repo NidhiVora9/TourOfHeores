@@ -2,7 +2,8 @@ import { Component} from '@angular/core';
 import { HeroService } from '../hero.service';
 import { Hero } from '../hero';
 import * as _ from 'lodash';
-import { Action } from '@ngrx/store';
+import { Actions } from '@ngrx/effects';
+// import { Action } from '@ngrx/store';
 import { HeroActions } from '../actions/hero-actions.component';
 
 
