@@ -43,4 +43,19 @@ export class HeroesComponent implements OnInit{
     this.router.navigate(['/detail', this.selectedHero.id]);
   }
 
+addHero(name: string, strength: number): void {
+    name = name.trim()
+    if(!name) { return; }
+    this.heroService.addHero({name, strength} as Hero)
+        .subscribe(hero => {
+          this.heroes.push(hero);
+        });
+}
+
+deleteHero(hero: Hero): void {
+      this.heroes = this.heroes.filter(h => h !== hero);
+      this.heroService.deleteHero(hero).subscribe();
+}
+
+
 }
